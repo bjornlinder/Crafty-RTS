@@ -1,0 +1,52 @@
+
+-Refactor code: {
+	-split initialize stuff into different methods
+	-reduce (if any) unit cloning
+}
+		
+
+Questions: 
+
+using 
+this. 	vs.
+. in methods
+
+#-unit health
+#-add creep generation...linear path initially...
+#-destroy creeps function
+-attack animation
+-experience & health change on contacting creeps
+-char upgrade screen
+#creepwave (number creeps, health)
+-victory screen
+-persisting data to next round
+-intelligent movement
+-currency
+-score
+-building towers
+-player health goes up by fibonacci sequence
+
+Functions:
+
+move: function (dir, by) {
+    if (dir.charAt(0) === 'n') this.y -= by;
+    if (dir.charAt(0) === 's') this.y += by;
+    if (dir === 'e' || dir.charAt(1) === 'e') this.x += by;
+    if (dir === 'w' || dir.charAt(1) === 'w') this.x -= by;
+
+    return this;
+},
+
+ * @sign public Number Crafty.math.distance(Number x1, Number y1, Number x2, Number y2)
+ * @param x1 - First x coordinate.
+ * @param y1 - First y coordinate.
+ * @param x2 - Second x coordinate.
+ * @param y2 - Second y coordinate.
+ * @return The distance between the two points.
+ *
+ * Distance between two points.
+ */
+distance: function (x1, y1, x2, y2) {
+    var squaredDistance = Crafty.math.squaredDistance(x1, y1, x2, y2);
+    return Math.sqrt(parseFloat(squaredDistance));
+},
