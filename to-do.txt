@@ -1,26 +1,23 @@
 
--Refactor code: {
-	-split initialize stuff into different methods
-	-reduce (if any) unit cloning
-}
-		
-
-Questions: 
-
-using 
-this. 	vs.
-. in methods
-
+#Get missiles working. See ai_movement and combat. debugger it.
 #-unit health
 #-add creep generation...linear path initially...
 #-destroy creeps function
--attack animation
--experience & health change on contacting creeps
--char upgrade screen
+/attack animation/
+#health change on contacting creeps
+-automatic level creation
 #creepwave (number creeps, health)
--victory screen
+#victory screen
+-game stats : experience, gold, level, score
 -persisting data to next round
--intelligent movement
+
+
+-display actor
+-menu (dynamic display - purchasing units)
+-selected unit display : health, unit name variables
+-display - scoreboard : global stats
+
+/intelligent movement/
 -currency
 -score
 -building towers

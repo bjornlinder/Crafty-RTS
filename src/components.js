@@ -28,26 +28,20 @@ Crafty.c('Actor', {
 });
 
 //Player team
-teamA = [];
 Crafty.c('GoodGuy', {
 	init: function() {
 		this.requires('Fights');
-		teamA.push(this);
 	}
-	
 });
 
-teamB = [];
 Crafty.c('Creep', {
 	init: function() {
 		this.requires('Actor, spr_apple, SpriteAnimation, Delay, Fights, Seek')
 		.reel('FruitMovingRight', 600, 3, 2, 4)
-		
+    this.target = Crafty('PC')
 		this.health = 10;
 		var animation_speed = 4;
 		this.animate('FruitMovingRight', -1);
-		
-		teamB.push(this);
 	},
 });
 
@@ -73,7 +67,7 @@ Crafty.c('Rock', {
 });
  
 // This is the player-controlled character
-player = Crafty.c('PlayerCharacter', {
+player = Crafty.c('PC', {
 	init: function() {
 		this.requires('Actor, Fourway, Collision, spr_player, SpriteAnimation, GoodGuy')
 			.fourway(2)
@@ -92,7 +86,7 @@ player = Crafty.c('PlayerCharacter', {
  
 		// Watch for a change of direction and switch animations accordingly
 		var animation_speed = 4;
-		this.health = 60;
+		this.health = 125;
 		this.bind('NewDirection', function(data) {
 			if (data.x > 0) {
 				this.animate('PlayerMovingRight', -1);
