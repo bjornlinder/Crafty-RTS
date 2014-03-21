@@ -1,0 +1,31 @@
+{
+  "name": "fruit-wars",
+  "version": "0.0.0",
+  "description": "\"Bjorn's TD Game\"",
+  "main": "web.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bjornlinder/Fruit-Wars-Game.git"
+  },
+  "keywords": [
+    "\"crafty.js\""
+  ],
+  "author": "\"Bjorn\"",
+  "license": "BSD",
+  "bugs": {
+    "url": "https://github.com/bjornlinder/Fruit-Wars-Game/issues"
+  },
+  "homepage": "https://github.com/bjornlinder/Fruit-Wars-Game",
+  "dependencies": {
+    "logfmt": "~1.0.0-pre3",
+    "express": "~3.5.0"
+  }
+  {
+    "engines": {
+      "node":
+    }
+  }
+}

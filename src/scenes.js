@@ -26,7 +26,17 @@ Crafty.scene('Game', function() {
 			} 
 		}
 	}
- 
+  
+  // Scoreboard
+	scoreboard = Crafty.e("2D, Canvas, Text").attr({ x: 100, y: 15 }).text('Look at me!! Score: ' + score)
+	   .textColor('#ffffff', 1.6);
+     https://groups.google.com/forum/#!topic/craftyjs/wO-0cYN8Dy4
+     // bind to death events
+     //Score boards
+     // Crafty.e("LeftPoints, DOM, 2D, Text")
+     //   .attr({ x: 20, y: 20, w: 100, h: 20, points: 0 })
+     //   .text("0 Points");
+     
  	//CREATE PATH FOR MINONS OF DARKNESS
   // for (var x = 0; x < Game.map_grid.width; x++) {
   //   this.occupied[x][3] = true;
@@ -207,13 +217,14 @@ Crafty.scene('Loading', function(){
 			ring:     ['assets/candy_dish_lid.mp3', 'assets/candy_dish_lid.ogg', 'assets/candy_dish_lid.aac']
 		});
  
-		// Now that our sprites are ready to draw, start the game
-		Crafty.scene('Game');
-		
-    // score = 0;
+ 
+    score = 0;
     // levels = 2;//next make this infinite
 		//wave count incrementing
-		// Crafty.e("2D, Canvas, Text").attr({ x: 100, y: 100 }).text('Look at me!!')
-		//   .textColor('#FF0000', 0.6);
+    // Crafty.e("2D, Canvas, Text").attr({ x: 100, y: 100 }).text('Look at me!! Score: ' + score)
+    //    .textColor('#FF0000', 0.6);
+ 
+		// Now that our sprites are ready to draw, start the game
+		Crafty.scene('Game');
 	});
 });

@@ -28,6 +28,7 @@ Crafty.c('Missile', {
     		if (dead) { // fighting unit is killed
       	//	console.log("Death Event Triggered. Dead cherry = " + this[0])
       		Crafty.trigger('Death', this);
+          score += 10;
     			// Assign gold, score, & xp to this trigger				 
     		}
 				this.destroy();
