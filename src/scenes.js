@@ -42,7 +42,7 @@ Crafty.scene('Game', function() {
   //   this.occupied[x][3] = true;
   // }
 	
-	creep_count = 8;
+	creep_count = 14;
 	spawn_interval = 800;
 	
   // Crafty.c('HellishPortal', {
