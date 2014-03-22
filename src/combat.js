@@ -64,6 +64,7 @@ Crafty.c('Fights', {
 		this.health -= damage;
 		if (this.health <= 0) {
       this.destroy();
+      score+=10;
 		//	Crafty.trigger("unit_killed",'experience')
 			return true	;	//remove self from team array
 		}

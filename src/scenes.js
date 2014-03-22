@@ -28,9 +28,10 @@ Crafty.scene('Game', function() {
 	}
   
   // Scoreboard
-	scoreboard = Crafty.e("2D, Canvas, Text").attr({ x: 100, y: 15 }).text('Look at me!! Score: ' + score)
-	   .textColor('#ffffff', 1.6);
-     https://groups.google.com/forum/#!topic/craftyjs/wO-0cYN8Dy4
+  Crafty.e('Scoreboard');
+	// scoreboard = Crafty.e("2D, Canvas, Text").attr({ x: 100, y: 15 }).text('Look at me!! Score: ' + score)
+//      .textColor('#ffffff', 1.6);
+  //   https://groups.google.com/forum/#!topic/craftyjs/wO-0cYN8Dy4
      // bind to death events
      //Score boards
      // Crafty.e("LeftPoints, DOM, 2D, Text")
@@ -74,7 +75,6 @@ Crafty.scene('Game', function() {
 			}
 		}
 	}
- 
 	// Play a ringing sound to indicate the start of the journey
 	Crafty.audio.play('ring');
  
