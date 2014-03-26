@@ -44,6 +44,11 @@ Crafty.scene('Game', function() {
       this.requires('Delay, Actor, candymountain');
     },
   });
+  Crafty.c('grass', {
+    init: function() {
+      this.requires('grass, Actor');
+    },
+  });
   
 	//Spawn the army of darkness
 	Crafty.e("HellishPortal").at(3,3).delay(function() {
@@ -56,12 +61,13 @@ Crafty.scene('Game', function() {
 	var max_villages = 5;
 	for (var x = 0; x < Game.map_grid.width; x++) {
 		for (var y = 0; y < Game.map_grid.height; y++) {
+      
 			if (Math.random() < 0.03) {
 				if (Crafty('Village').length < max_villages && !this.occupied[x][y]) {
 					Crafty.e('Village').at(x, y);
 				}
 			}
-			else if (Math.random() < 0.09 && !this.occupied[x][y]) {
+			else if (Math.random() < (0.09 + level * 0.005) && !this.occupied[x][y]) {
 				// Place a bush entity at the current tile
 				var bush_or_rock = 'Tree'
 				Crafty.e(bush_or_rock).at(x, y)
@@ -72,7 +78,6 @@ Crafty.scene('Game', function() {
 	// Play a ringing sound to indicate the start of the journey
 	Crafty.audio.play('ring');
 
-  
 	Crafty.bind('PlayerDeath', function() {
     console.log('Death was triggered. Crafty("PC").length: ' + Crafty('PC').length)
 		Crafty.scene('Failure');
@@ -170,6 +175,12 @@ Crafty.scene('Loading', function(){
 	// Load our sprite map image
 	Crafty.load([
 		'assets/frogs.png',
+    'assets/grass.png',
+    'assets/fireball.png',
+    'assets/apple.png',
+    'assets/chapstick.png',
+    'assets/tree.png',
+    'assets/wizard.png',
 		'assets/door_knock_3x.mp3',
 		'assets/door_knock_3x.ogg',
 		'assets/door_knock_3x.aac',
@@ -194,6 +205,8 @@ Crafty.scene('Loading', function(){
 		Crafty.sprite('assets/chapstick.png', {chapstick:[0,0,52,39]});
 		Crafty.sprite('assets/fireball.png', {fireball:[0,0,28,32]});
 		Crafty.sprite('assets/apple.png', {apple:[0,0,44,44]});
+		Crafty.sprite('assets/grass.png', {grass:[0,0,52,52]});
+    
     
 		Crafty.sprite(36, 'assets/frogs.png', {
 			spr_frog:  [0, 0]

@@ -81,7 +81,7 @@ Crafty.c('PC', {
  
 		// Watch for a change of direction and switch animations accordingly
 		var animation_speed = 4;
-		this.maxHealth = 142;
+		this.maxHealth = 136 + (level * 8);
     this.health = this.maxHealth;
     
     this.bind('KeyDown', function(key) {
@@ -142,6 +142,8 @@ Crafty.c('Village', {
 	// Process a visitation with this village
 	visit: function() {
 		this.destroy();
+    Crafty('PC').health += 10;
+    score += 8;
 		Crafty.audio.play('knock');
 		Crafty.trigger('VillageVisited', this);
 	}

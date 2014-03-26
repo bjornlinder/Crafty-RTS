@@ -63,7 +63,7 @@ Crafty.c('Fights', {
         Crafty.trigger('LevelComplete');
       } 
       console.log("Destroyed " + this[0])
-      score+=10;
+      score+=20;
       gold+=10;
 			return true;
 		}

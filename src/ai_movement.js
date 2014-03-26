@@ -1,6 +1,6 @@
 Crafty.c('Seek', {
 	init: function() {
-    this.move_speed = 2
+    this.move_speed = 1.4 + (level * 0.05)
 		this.bind("EnterFrame", function(){
 			// moves unit 1 pixel in direction of target
 			var xdist = Math.abs((this.target.x - this.x))
@@ -14,7 +14,7 @@ Crafty.c('Seek', {
 Crafty.c('Missile', {
 	init: function() {
 	  this.requires('Actor, fireball');
-    this.movespeed = 4;
+    this.movespeed = 4 + (level * 0.1);
 		this.bind("EnterFrame", function() {
       
 			var xdist = Math.abs((this.target.x - this.x))
@@ -24,7 +24,6 @@ Crafty.c('Missile', {
         dead = this.target.takeDamage(this.owner.attack);
     		if (dead) { // fighting unit is killed
         console.log('Death about to be triggered. Crafty("PC").length: ' + Crafty('PC').length + ";  Missile id: " + this[0]);
-          score += 10;
     		}
         console.log('Missile about to be destoryed. Owner: ' + this.owner[0] );
 				this.destroy();        
