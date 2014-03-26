@@ -65,7 +65,7 @@ Crafty.c('Tree', {
 Crafty.c('PC', {
 	init: function() {
 		this.requires('Actor, Fourway, Collision, wizard, SpriteAnimation, GoodGuy')
-			.fourway(4+level*0.315)
+			.fourway(3.7+level*0.315)
 			.stopOnSolids()
 			.onHit('Village', this.visitVillage)
 			// These next lines define our four animations
