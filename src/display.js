@@ -2,24 +2,34 @@ Crafty.c('HealthBar', {
 	init: function() {
 		this.requires('Actor, Color');
     this.color('rgb(255,0,0)') 
-    this.h = 3;
-		this.bind("EnterFrame", function(){
-      var barLength = (Crafty(2).health / Crafty(2).maxHealth);
-      this.w = 20 * barLength;
-      this.at(Crafty(2).at().x, Crafty(2).at().y - 0.5);
+    this.h = 5;
+        
+		this.bind("EnterFrame", function(){      
+      var barLength = (Crafty('PC').health / Crafty('PC').maxHealth);
+      this.w = 40 * barLength;
+      this.at(Crafty('PC').at().x, Crafty('PC').at().y - 0.5);
     });
-  }
+  },
+  
+	at: function(x, y) {
+		if (x === undefined && y === undefined) {
+			return { x: this.x/Game.map_grid.tile.width, y: this.y/Game.map_grid.tile.height };
+		} else {
+			this.attr({ x: x * Game.map_grid.tile.width, y: y * Game.map_grid.tile.height });
+			return this;
+		}
+	}
+  
 });
 
 Crafty.c('Scoreboard', {
 	init: function() {
-    score = 0;
     this.requires("2D, Canvas, Text")
-        .attr({ x: 100, y: 15 })
+        .attr({ x: 100, y: 50 })
      //   .text('Look at me!! Score: ' + score)
-        .textColor('#ffffff', 1.6);
+        .textColor('#ffffff', 3);
 		this.bind("EnterFrame", function(){
-      this.text('Look at me!! Score: ' + score);
+      this.text('Level: ' + level + ' Score: ' + score + " Gold: " + gold);
     });
   }
 });

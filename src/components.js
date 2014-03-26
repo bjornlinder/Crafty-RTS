@@ -30,15 +30,22 @@ Crafty.c('Actor', {
 //Player team
 Crafty.c('GoodGuy', {
 	init: function() {
-		this.requires('Fights');
-    Crafty.e('HealthBar').attr({x:5,y:5});
-    
+		this.requires('Fights');    
+	}
+});
+
+Crafty.c('Tower', {
+	init: function() {
+		this.requires('GoodGuy, spr_frog, Actor');
+		this.maxHealth = 40;
+    this.health = this.maxHealth;
+    this.at(Crafty('PC').at().x, Crafty('PC').at().y);
 	}
 });
 
 Crafty.c('Creep', {
 	init: function() {
-		this.requires('Actor, spr_apple, SpriteAnimation, Delay, Fights, Seek')
+		this.requires('Actor, apple, SpriteAnimation, Delay, Fights, Seek')
 		.reel('FruitMovingRight', 600, 3, 2, 4)
     this.target = Crafty('PC')
 		this.health = 10;
@@ -54,25 +61,11 @@ Crafty.c('Tree', {
 	},
 });
  
-// A Bush is just an Actor with a certain sprite
-Crafty.c('Bush', {
-	init: function() {
-		this.requires('Actor, Solid, spr_bush');
-	},
-});
- 
-// A Rock is just an Actor with a certain sprite
-Crafty.c('Rock', {
-	init: function() {
-    this.requires('Actor, Solid, spr_rock');
-	},
-});
- 
 // This is the player-controlled character
-player = Crafty.c('PC', {
+Crafty.c('PC', {
 	init: function() {
-		this.requires('Actor, Fourway, Collision, spr_player, SpriteAnimation, GoodGuy')
-			.fourway(2)
+		this.requires('Actor, Fourway, Collision, wizard, SpriteAnimation, GoodGuy')
+			.fourway(4)
 			.stopOnSolids()
 			.onHit('Village', this.visitVillage)
 			// These next lines define our four animations
@@ -88,8 +81,19 @@ player = Crafty.c('PC', {
  
 		// Watch for a change of direction and switch animations accordingly
 		var animation_speed = 4;
-		this.maxHealth = 135;
+		this.maxHealth = 142;
     this.health = this.maxHealth;
+    
+    this.bind('KeyDown', function(key) {
+      if (key.key === Crafty.keys.T) {
+        if (gold >=100) {
+          Crafty.e('Tower');
+          gold-=100
+          console.log("Keydown success. activated.");
+        } 
+      }
+    });
+    
 		this.bind('NewDirection', function(data) {
 			if (data.x > 0) {
 				this.animate('PlayerMovingRight', -1);
@@ -126,16 +130,13 @@ player = Crafty.c('PC', {
 		villlage = data[0].obj;
 		villlage.visit();
 	}
-	// attack: function(data) {
-	// 	fruit = data[0].obj;
-	// 	fruit.hit();
-	// }
+
 });
  
 // A village is a tile on the grid that the PC must visit in order to win the game
 Crafty.c('Village', {
 	init: function() {
-		this.requires('Actor, spr_village');
+		this.requires('Actor, chapstick');
 	},
  
 	// Process a visitation with this village

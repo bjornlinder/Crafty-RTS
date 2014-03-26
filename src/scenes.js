@@ -13,6 +13,7 @@ Crafty.scene('Game', function() {
  
 	// Player character, placed at 5, 5 on our grid
 	this.player = Crafty.e('PC').at(10, 5);
+  Crafty.e('HealthBar').attr({x:5,y:5});
 	this.occupied[this.player.at().x][this.player.at().y] = true;
  
 	// Place a tree at every edge square on our grid of 16x16 tiles
@@ -27,33 +28,26 @@ Crafty.scene('Game', function() {
 		}
 	}
   
-  // Scoreboard
   Crafty.e('Scoreboard');
-	// scoreboard = Crafty.e("2D, Canvas, Text").attr({ x: 100, y: 15 }).text('Look at me!! Score: ' + score)
-//      .textColor('#ffffff', 1.6);
-  //   https://groups.google.com/forum/#!topic/craftyjs/wO-0cYN8Dy4
-     // bind to death events
-     //Score boards
-     // Crafty.e("LeftPoints, DOM, 2D, Text")
-     //   .attr({ x: 20, y: 20, w: 100, h: 20, points: 0 })
-     //   .text("0 Points");
-     
- 	//CREATE PATH FOR MINONS OF DARKNESS
-  // for (var x = 0; x < Game.map_grid.width; x++) {
-  //   this.occupied[x][3] = true;
-  // }
-	
-	creep_count = 14;
-	spawn_interval = 800;
-	
-  // Crafty.c('HellishPortal', {
-  //   init: function() {
-  //     this.requires('Delay');
-  //   },
-  // });
+
+	creeps_spawned = 0;
+	creep_count = 7 + (level * 2);
+  spawn_interval = 1000 - (level * 100);
+	if (spawn_interval < 500) {
+    spawn_interval = 500;
+  }
+  
+ // var ent = Crafty.e("2D, DOM, Image").image("myimage.png");
+  
+  Crafty.c('HellishPortal', {
+    init: function() {
+      this.requires('Delay, Actor, candymountain');
+    },
+  });
   
 	//Spawn the army of darkness
-	Crafty.e("Delay").delay(function() {
+	Crafty.e("HellishPortal").at(3,3).delay(function() {
+    creeps_spawned+=1;
 		Crafty.e("Creep").at(3,3);
 	},	spawn_interval, creep_count - 1	//will need to update the creep count/clean method.
 	);
@@ -69,7 +63,7 @@ Crafty.scene('Game', function() {
 			}
 			else if (Math.random() < 0.09 && !this.occupied[x][y]) {
 				// Place a bush entity at the current tile
-				var bush_or_rock = (Math.random() > 0.3) ? 'Bush' : 'Rock'
+				var bush_or_rock = 'Tree'
 				Crafty.e(bush_or_rock).at(x, y)
 				this.occupied[x][y] = true;
 			}
@@ -77,29 +71,27 @@ Crafty.scene('Game', function() {
 	}
 	// Play a ringing sound to indicate the start of the journey
 	Crafty.audio.play('ring');
- 
-	// Show the victory screen once all villages are visisted
-  // this.show_victory = this.bind('VillageVisited', function() {
-  //   if (!Crafty('Village').length) {
-  //     Crafty.scene('Victory');
-  //   }
-  // });
+
   
-	this.show_result = this.bind('Death', function() {
-//    debugger
-		if (!Crafty('PC').length) {
-			Crafty.scene('Failure');
-		}
-		else if (!Crafty('Creep').length) {
-			Crafty.scene('Victory');
-		}
+	Crafty.bind('PlayerDeath', function() {
+    console.log('Death was triggered. Crafty("PC").length: ' + Crafty('PC').length)
+		Crafty.scene('Failure');
 	});
   
+	Crafty.bind('LevelComplete', function() {
+    console.log('All Creeps killed. ' + Crafty('PC').length)
+    if (creeps_spawned >= creep_count) {
+  		Crafty.scene('Victory');
+    }
+	});
+ 
 }, function() {
 	// Remove our event binding from above so that we don't
 	//  end up having multiple redundant event watchers after
 	//  multiple restarts of the game
-	this.unbind('VillageVisited', this.show_result);
+	//this.unbind('Death', this.show_result);
+  this.unbind('LevelComplete', this.show_result);
+  this.unbind('PlayerDeath', this.show_result); 
 });
  
  
@@ -109,7 +101,7 @@ Crafty.scene('Game', function() {
 Crafty.scene('Victory', function() {
 	// Display some text in celebration of the victory
 	Crafty.e('2D, DOM, Text')
-		.text('You Make a Fruit Smoothie.')
+		.text('You Make a Fruit Smoothie. Level Reached: ' + level + ' Score: ' + score + ' Press any key to continue.' )
 		.attr({ x: 0, y: Game.height()/2 - 24, w: Game.width() })
 		.textFont($text_css);
  
@@ -122,6 +114,9 @@ Crafty.scene('Victory', function() {
 	setTimeout(function() { delay = false; }, 5000);
 	this.restart_game = function() {
 		if (!delay) {
+      level += 1;
+      score = score;
+      gold = 100 + (level * 10);
 			Crafty.scene('Game');
 		}
 	};
@@ -136,7 +131,7 @@ Crafty.scene('Victory', function() {
 Crafty.scene('Failure', function() {
 	// Display some text in celebration of the victory
 	Crafty.e('2D, DOM, Text')
-		.text('Your Hero Has Been Slain By Rotten Fruit!')
+		.text('Your Hero Has Been Slain By Rotten Fruit! Final score: ' + score)
 		.attr({ x: 0, y: Game.height()/2 - 24, w: Game.width() })
 		.textFont($text_css);
 
@@ -146,6 +141,9 @@ Crafty.scene('Failure', function() {
 	setTimeout(function() { delay = false; }, 5000);
 	this.restart_game = function() {
 		if (!delay) {
+      level = 1;
+      score = 0;
+      gold = 100;
 			Crafty.scene('Game');
 		}
 	};
@@ -171,12 +169,11 @@ Crafty.scene('Loading', function(){
  
 	// Load our sprite map image
 	Crafty.load([
-		'assets/fruit.png',
-		'assets/16x16_forest_2.gif',
-		'assets/hunter.png',
+		'assets/frogs.png',
 		'assets/door_knock_3x.mp3',
 		'assets/door_knock_3x.ogg',
 		'assets/door_knock_3x.aac',
+    'assets/hadouken.mp3',
 		'assets/board_room_applause.mp3',
 		'assets/board_room_applause.ogg',
 		'assets/board_room_applause.aac',
@@ -186,39 +183,32 @@ Crafty.scene('Loading', function(){
 		], function(){
 		// Once the images are loaded...
  
-		// Define the individual sprites in the image
-		// Each one (spr_tree, etc.) becomes a component
-		// These components' names are prefixed with "spr_"
-		//  to remind us that they simply cause the entity
-		//  to be drawn with a certain sprite
-		Crafty.sprite(16, 'assets/16x16_forest_2.gif', {
-			spr_tree:    [0, 0],
-			spr_bush:    [1, 0],
-			spr_village: [0, 1],
-			spr_rock:    [1, 1]
-		});
- 
 		// Define the PC's sprite to be the first sprite in the third row of the
 		//  animation sprite map
-		Crafty.sprite(16, 'assets/hunter.png', {
-			spr_player:  [0, 2],
-		}, 0, 2);
-		
-		Crafty.sprite(28, 'assets/fruit.png', {
-			spr_cherry:  [3, 1],
-			spr_apple:  [0, 0],
-			spr_banana:  [5, 3],
-		});
+    // Crafty.sprite(16, 'assets/hunter.png', {
+    //   spr_player:  [0, 2],
+    // }, 0, 2);
+		Crafty.sprite('assets/wizard.png', {wizard:[0,0,42,52]});
+		Crafty.sprite('assets/tree.png', {spr_tree:[0,0,52,52]});
+		Crafty.sprite('assets/candymountain.png', {candymountain:[0,0,64,59]});
+		Crafty.sprite('assets/chapstick.png', {chapstick:[0,0,52,39]});
+		Crafty.sprite('assets/fireball.png', {fireball:[0,0,28,32]});
+		Crafty.sprite('assets/apple.png', {apple:[0,0,44,44]});
+    
+		Crafty.sprite(36, 'assets/frogs.png', {
+			spr_frog:  [0, 0]
+    });
  
 		// Define our sounds for later use
 		Crafty.audio.add({
+      hadouken: ['assets/hadouken.mp3'],
 			knock:    ['assets/door_knock_3x.mp3', 'assets/door_knock_3x.ogg', 'assets/door_knock_3x.aac'],
 			applause: ['assets/board_room_applause.mp3', 'assets/board_room_applause.ogg', 'assets/board_room_applause.aac'],
 			ring:     ['assets/candy_dish_lid.mp3', 'assets/candy_dish_lid.ogg', 'assets/candy_dish_lid.aac']
 		});
- 
- 
     score = 0;
+    gold = 100;
+    level = 1;
     // levels = 2;//next make this infinite
 		//wave count incrementing
     // Crafty.e("2D, Canvas, Text").attr({ x: 100, y: 100 }).text('Look at me!! Score: ' + score)

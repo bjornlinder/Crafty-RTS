@@ -1,3 +1,30 @@
+See scenes.js 102.
+
+enemies: bugs? 
+foo, bar, bazz...
+
+powerups: chapstick, red stapler
+
+Debugging in Javascript:
+
+Listing & navigating objects in the console (esp. parents/children)
+Active processes/event watchers
+
+#6069
+
+for (i = 0; i < callbacks.length; i++) {
+    // Remove a callback if it has been deleted
+    if (typeof callbacks[i] === "undefined") {
+        callbacks.splice(i, 1);
+        i--;
+    } else
+        callbacks[i].call(context, data);
+}
+
+
+-combat.js 42 at method...
+-keys turn funky after awhile (keydown stuck?)
+
 
 #Get missiles working. See ai_movement and combat. debugger it.
 #-unit health
