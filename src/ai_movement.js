@@ -1,11 +1,11 @@
 Crafty.c('Seek', {
 	init: function() {
-    this.move_speed = 1.4 + (level * 0.05)
+    this.movespeed = 1.4 + (level * 0.05)
 		this.bind("EnterFrame", function(){
 			// moves unit 1 pixel in direction of target
 			var xdist = Math.abs((this.target.x - this.x))
 			var ydist = Math.abs((this.target.y - this.y))
-			this.shift(this.move_speed*(this.target.x - this.x) / (xdist + ydist), (this.target.y - this.y) / (xdist + ydist), 0, 0);
+			this.shift(this.movespeed*(this.target.x - this.x) / (xdist + ydist), this.movespeed*(this.target.y - this.y) / (xdist + ydist), 0, 0);
 		});
 	}
 
@@ -19,7 +19,7 @@ Crafty.c('Missile', {
       
 			var xdist = Math.abs((this.target.x - this.x))
 			var ydist = Math.abs((this.target.y - this.y))
-			this.shift(this.movespeed*(this.target.x - this.x) / (xdist + ydist), (this.target.y - this.y) / (xdist + ydist), 0, 0);
+			this.shift(this.movespeed*(this.target.x - this.x) / (xdist + ydist), this.movespeed*(this.target.y - this.y) / (xdist + ydist), 0, 0);
 			if ((xdist + ydist) < 5) {  // OR NaN
         dead = this.target.takeDamage(this.owner.attack);
     		if (dead) { // fighting unit is killed

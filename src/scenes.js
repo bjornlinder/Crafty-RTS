@@ -200,7 +200,7 @@ Crafty.scene('Loading', function(){
     //   spr_player:  [0, 2],
     // }, 0, 2);
 		Crafty.sprite('assets/wizard.png', {wizard:[0,0,42,52]});
-		Crafty.sprite('assets/tree.png', {spr_tree:[0,0,45,45]});
+		Crafty.sprite('assets/tree2.png', {spr_tree:[0,0,43,41]});
 		Crafty.sprite('assets/candymountain.png', {candymountain:[0,0,64,59]});
 		Crafty.sprite('assets/chapstick.png', {chapstick:[0,0,52,39]});
 		Crafty.sprite('assets/fireball.png', {fireball:[0,0,28,32]});
