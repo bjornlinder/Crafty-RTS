@@ -1,6 +1,6 @@
 Crafty.c('Seek', {
 	init: function() {
-    this.movespeed = 1.4 + (level * 0.05)
+    this.movespeed = 1.4 + (level * 0.1)
 		this.bind("EnterFrame", function(){
 			// moves unit 1 pixel in direction of target
 			var xdist = Math.abs((this.target.x - this.x))
@@ -14,7 +14,7 @@ Crafty.c('Seek', {
 Crafty.c('Missile', {
 	init: function() {
 	  this.requires('Actor, fireball');
-    this.movespeed = 4 + (level * 0.1);
+    this.movespeed = 3.6 + (level * 0.3);
 		this.bind("EnterFrame", function() {
       
 			var xdist = Math.abs((this.target.x - this.x))

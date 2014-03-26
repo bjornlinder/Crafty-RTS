@@ -65,7 +65,7 @@ Crafty.c('Tree', {
 Crafty.c('PC', {
 	init: function() {
 		this.requires('Actor, Fourway, Collision, wizard, SpriteAnimation, GoodGuy')
-			.fourway(4)
+			.fourway(4+level*0.315)
 			.stopOnSolids()
 			.onHit('Village', this.visitVillage)
 			// These next lines define our four animations
@@ -142,7 +142,7 @@ Crafty.c('Village', {
 	// Process a visitation with this village
 	visit: function() {
 		this.destroy();
-    Crafty('PC').health += 10;
+    Crafty('PC').health += 15;
     score += 8;
 		Crafty.audio.play('knock');
 		Crafty.trigger('VillageVisited', this);
