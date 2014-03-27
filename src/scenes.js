@@ -227,7 +227,7 @@ Crafty.scene('Loading', function(){
     score = 0;
     levelscore = 0;
     gold = 100;
-    level = 4;
+    level = 1;
     lives = 3;
     // levels = 2;//next make this infinite
 		//wave count incrementing
