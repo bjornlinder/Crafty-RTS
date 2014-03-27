@@ -13,7 +13,7 @@ Crafty.c('Fights', {
   
   enemies: function() {
 		if (this.has('GoodGuy')) {
-			return Crafty('Creep');
+			return Crafty('BadGuy');
     } else {
 			return Crafty('GoodGuy');
     }
@@ -59,7 +59,7 @@ Crafty.c('Fights', {
       this.destroy();
       if (Crafty('PC').length == 0) {
     		Crafty.trigger('PlayerDeath');
-      } else if (Crafty('Creep').length == 0) {
+      } else if (Crafty('BadGuy').length == 0) {
         Crafty.trigger('LevelComplete');
       } 
       console.log("Destroyed " + this[0])

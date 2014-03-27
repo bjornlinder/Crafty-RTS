@@ -34,6 +34,47 @@ Crafty.c('GoodGuy', {
 	}
 });
 
+Crafty.c('HellishPortal', {
+  init: function() {
+    this.requires('Delay, Actor');
+  },
+});
+
+Crafty.c('CandyMountain', {
+  init: function() {
+    this.requires('HellishPortal, candymountain');
+  },
+});
+
+Crafty.c('BadGuy', {
+	init: function() {
+		this.requires('Actor, Delay, Fights, Seek')
+    this.target = Crafty('PC')
+	},
+});
+
+Crafty.c('Creep', {
+	init: function() {
+		this.requires('apple, BadGuy')
+		this.health = 10;
+    this.movespeed = 1.2 + (level * 0.17);
+	},
+});
+
+Crafty.c('Boss', {
+  init: function() {
+    this.requires('HellishPortal, BadGuy, bossapple');
+    this.health = 40;
+    this.movespeed = 0.5;
+  },
+});
+
+Crafty.c('grass', {
+  init: function() {
+    this.requires('grass, Actor');
+  },
+});
+
 Crafty.c('Tower', {
 	init: function() {
 		this.requires('GoodGuy, spr_frog, Actor');
@@ -41,17 +82,6 @@ Crafty.c('Tower', {
     this.health = this.maxHealth;
     this.at(Crafty('PC').at().x, Crafty('PC').at().y);
 	}
-});
-
-Crafty.c('Creep', {
-	init: function() {
-		this.requires('Actor, apple, SpriteAnimation, Delay, Fights, Seek')
-		.reel('FruitMovingRight', 600, 3, 2, 4)
-    this.target = Crafty('PC')
-		this.health = 10;
-		var animation_speed = 4;
-		this.animate('FruitMovingRight', -1);
-	},
 });
 
 // A Tree is just an Actor with a certain sprite
@@ -65,15 +95,9 @@ Crafty.c('Tree', {
 Crafty.c('PC', {
 	init: function() {
 		this.requires('Actor, Fourway, Collision, wizard, SpriteAnimation, GoodGuy')
-			.fourway(3.7+level*0.315)
+			.fourway(3.4+level*0.37)
 			.stopOnSolids()
 			.onHit('Village', this.visitVillage)
-			// These next lines define our four animations
-			//  each call to .animate specifies:
-			//  - the name of the animation
-			//  - the x and y coordinates within the sprite
-			//     map at which the animation set begins
-			//  - the number of animation frames *in addition to* the first one
 			.reel('PlayerMovingUp',    600, 0, 0, 3)
 			.reel('PlayerMovingRight', 600, 0, 1, 3)
 			.reel('PlayerMovingDown',  600, 0, 2, 3)

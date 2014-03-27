@@ -39,24 +39,22 @@ Crafty.scene('Game', function() {
   
  // var ent = Crafty.e("2D, DOM, Image").image("myimage.png");
   
-  Crafty.c('HellishPortal', {
-    init: function() {
-      this.requires('Delay, Actor, candymountain');
-    },
-  });
-  Crafty.c('grass', {
-    init: function() {
-      this.requires('grass, Actor');
-    },
-  });
-  
 	//Spawn the army of darkness
-	Crafty.e("HellishPortal").at(3,3).delay(function() {
-    creeps_spawned+=1;
-		Crafty.e("Creep").at(3,3);
-	},	spawn_interval, creep_count - 1	//will need to update the creep count/clean method.
-	);
-	
+  if (level == 5) {
+		Crafty.audio.play('divadance');
+    Crafty.e('Boss').at(3,3).delay(function() {
+      creeps_spawned+=1;
+  		Crafty.e("Creep").at(this.at().x,this.at().y);
+  	},	spawn_interval, creep_count - 1	//will need to update the creep count/clean method.
+  	);
+  } else {
+  	Crafty.e("CandyMountain").at(3,3).delay(function() {
+      creeps_spawned+=1;
+  		Crafty.e("Creep").at(3,3);
+  	},	spawn_interval, creep_count - 1	//will need to update the creep count/clean method.
+  	);
+  }
+
 	// Generate five villages on the map in random locations
 	var max_villages = 5;
 	for (var x = 0; x < Game.map_grid.width; x++) {
@@ -121,7 +119,7 @@ Crafty.scene('Victory', function() {
 		if (!delay) {
       level += 1;
       score = score;
-      gold = 100 + (level * 10);
+      gold = 100 + gold * 0.1 + (level * 10);
 			Crafty.scene('Game');
 		}
 	};
@@ -179,8 +177,9 @@ Crafty.scene('Loading', function(){
     'assets/fireball.png',
     'assets/apple.png',
     'assets/chapstick.png',
-    'assets/tree.png',
+    'assets/tree2.png',
     'assets/wizard.png',
+    'assets/divadance.m4a',
 		'assets/door_knock_3x.mp3',
 		'assets/door_knock_3x.ogg',
 		'assets/door_knock_3x.aac',
@@ -205,8 +204,8 @@ Crafty.scene('Loading', function(){
 		Crafty.sprite('assets/chapstick.png', {chapstick:[0,0,52,39]});
 		Crafty.sprite('assets/fireball.png', {fireball:[0,0,28,32]});
 		Crafty.sprite('assets/apple.png', {apple:[0,0,44,44]});
-		Crafty.sprite('assets/grass.png', {grass:[0,0,52,52]});
-    
+	//	Crafty.sprite('assets/grass.png', {grass:[0,0,52,52]});
+		Crafty.sprite('assets/bossapple.png', {bossapple:[0,0,88,88]});
     
 		Crafty.sprite(36, 'assets/frogs.png', {
 			spr_frog:  [0, 0]
@@ -214,6 +213,7 @@ Crafty.scene('Loading', function(){
  
 		// Define our sounds for later use
 		Crafty.audio.add({
+      divadance: ['assets/divadance.m4a'],
       hadouken: ['assets/hadouken.mp3'],
 			knock:    ['assets/door_knock_3x.mp3', 'assets/door_knock_3x.ogg', 'assets/door_knock_3x.aac'],
 			applause: ['assets/board_room_applause.mp3', 'assets/board_room_applause.ogg', 'assets/board_room_applause.aac'],

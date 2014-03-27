@@ -1,14 +1,9 @@
-See scenes.js 102.
 
 enemies: bugs? 
 foo, bar, bazz...
 
 powerups: chapstick, red stapler
 
-Debugging in Javascript:
-
-Listing & navigating objects in the console (esp. parents/children)
-Active processes/event watchers
 
 #6069
 
@@ -22,33 +17,27 @@ for (i = 0; i < callbacks.length; i++) {
 }
 
 
--combat.js 42 at method...
--keys turn funky after awhile (keydown stuck?)
-
-
 #Get missiles working. See ai_movement and combat. debugger it.
 #-unit health
 #-add creep generation...linear path initially...
 #-destroy creeps function
 /attack animation/
 #health change on contacting creeps
--automatic level creation
+#automatic level creation
 #creepwave (number creeps, health)
 #victory screen
--game stats : experience, gold, level, score
--persisting data to next round
+#game stats : experience, gold, level, score
+#persisting data to next round
 
-
--display actor
+#display actor
 -menu (dynamic display - purchasing units)
--selected unit display : health, unit name variables
--display - scoreboard : global stats
+#selected unit display : health, unit name variables
+#display - scoreboard : global stats
 
 /intelligent movement/
--currency
--score
--building towers
--player health goes up by fibonacci sequence
+#currency
+#score
+#building towers
 
 Functions:
 
