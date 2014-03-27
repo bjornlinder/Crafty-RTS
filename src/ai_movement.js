@@ -13,14 +13,14 @@ Crafty.c('Seek', {
 Crafty.c('Missile', {
 	init: function() {
 	  this.requires('Actor, fireball');
-    this.movespeed = 3.2 + (level * 0.35);
+    this.movespeed = 3.0 + (level * 0.37);
 		this.bind("EnterFrame", function() {
       
 			var xdist = Math.abs((this.target.x - this.x))
 			var ydist = Math.abs((this.target.y - this.y))
 			this.shift(this.movespeed*(this.target.x - this.x) / (xdist + ydist), this.movespeed*(this.target.y - this.y) / (xdist + ydist), 0, 0);
 			if ((xdist + ydist) < 5) {  // OR NaN
-        dead = this.target.takeDamage(this.owner.attack);
+        var dead = this.target.takeDamage(this.owner.attack);
     		if (dead) { // fighting unit is killed
        // console.log('Death about to be triggered. Crafty("PC").length: ' + Crafty('PC').length + ";  Missile id: " + this[0]);
     		}

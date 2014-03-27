@@ -65,7 +65,7 @@ Crafty.scene('Game', function() {
 					Crafty.e('Village').at(x, y);
 				}
 			}
-			else if (Math.random() < (0.09 + level * 0.005) && !this.occupied[x][y]) {
+			else if (Math.random() < (0.08 + level * 0.005) && !this.occupied[x][y]) {
 				// Place a bush entity at the current tile
 				var bush_or_rock = 'Tree'
 				Crafty.e(bush_or_rock).at(x, y)

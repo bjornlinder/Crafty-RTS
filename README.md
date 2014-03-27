@@ -1,5 +1,6 @@
 Fruit-Wars-Game
 ===============
+fruit-wars.herokuapp.com
 
 Game created on crafty.js library
 
