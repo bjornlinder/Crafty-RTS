@@ -98,7 +98,7 @@ Crafty.c('Tree', {
 Crafty.c('PC', {
 	init: function() {
 		this.requires('Actor, Fourway, Collision, wizard, SpriteAnimation, GoodGuy')
-			.fourway(3.4+level*0.37)
+			.fourway(3.4+level*0.4)
 			.stopOnSolids()
 			.onHit('Village', this.visitVillage)
 			.reel('PlayerMovingUp',    600, 0, 0, 3)
