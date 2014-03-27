@@ -40,18 +40,29 @@ Crafty.scene('Game', function() {
  // var ent = Crafty.e("2D, DOM, Image").image("myimage.png");
   
 	//Spawn the army of darkness
-  if (level == 5 || level == 10) {
+  if (level == 3 || level == 8) {
 		Crafty.audio.play('divadance');
     Crafty.e('Boss').at(3,3).delay(function() {
       creeps_spawned+=1;
   		Crafty.e("Creep").at(this.at().x,this.at().y);
-  	},	spawn_interval, creep_count - 1	//will need to update the creep count/clean method.
+  	},	spawn_interval, creep_count - 1	
   	);
+  } else if (level == 5 || level == 10) {
+  	creep_count = 3 * level - 1;
+    Crafty.e('CandyMountain').at(3,3).delay(function() {
+      creeps_spawned+=1;
+      Crafty.e("Boss").at(this.at().x,this.at().y).delay(function() {
+        creeps_spawned+=1;
+    		Crafty.e("Creep").at(this.at().x,this.at().y);
+      },   spawn_interval, 2 + level/5 
+      );
+    }, 5000, 1 + level/5
+    );  
   } else {
   	Crafty.e("CandyMountain").at(3,3).delay(function() {
       creeps_spawned+=1;
   		Crafty.e("Creep").at(3,3);
-  	},	spawn_interval, creep_count - 1	//will need to update the creep count/clean method.
+  	},	spawn_interval, creep_count - 1
   	);
   }
 
@@ -134,7 +145,8 @@ Crafty.scene('Victory', function() {
 Crafty.scene('Failure', function() {
 	// Display some text in celebration of the victory
 	Crafty.e('2D, DOM, Text')
-		.text('Your Hero Has Been Slain By Rotten Fruit! Score: ' + score + " Lives remaining: " + lives)
+	  .text('Faizaan has fallen. Final score: ' + score + " Lives remaining: " + lives)
+	//	.text('Your Hero Has Been Slain By Rotten Fruit! Score: ' + score + " Lives remaining: " + lives)
 		.attr({ x: 0, y: Game.height()/2 - 24, w: Game.width() })
 		.textFont($text_css);
 
@@ -228,7 +240,7 @@ Crafty.scene('Loading', function(){
     levelscore = 0;
     gold = 100;
     level = 1;
-    lives = 3;
+    lives = 5;
     // levels = 2;//next make this infinite
 		//wave count incrementing
     // Crafty.e("2D, Canvas, Text").attr({ x: 100, y: 100 }).text('Look at me!! Score: ' + score)

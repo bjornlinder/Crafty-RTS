@@ -58,7 +58,7 @@ Crafty.c('Creep', {
 		this.requires('apple, BadGuy')
 		this.health = 10;
     this.movespeed = 1.2 + (level * 0.17);
-    if (level == 4 || level == 8) {
+    if (level == 4 || level == 8 || level == 10) {
       this.movespeed = this.movespeed * 1.45 * Math.random();
     }
 	},
@@ -81,7 +81,7 @@ Crafty.c('grass', {
 Crafty.c('Tower', {
 	init: function() {
 		this.requires('GoodGuy, spr_frog, Actor');
-		this.maxHealth = 40;
+		this.maxHealth = 40 + level*4;
     this.health = this.maxHealth;
     this.at(Crafty('PC').at().x, Crafty('PC').at().y);
 	}
@@ -113,9 +113,9 @@ Crafty.c('PC', {
     
     this.bind('KeyDown', function(key) {
       if (key.key === Crafty.keys.T) {
-        if (gold >=100) {
+        if (gold >=(100 + level*5)) {
           Crafty.e('Tower');
-          gold-=100
+          gold-=(100 + level*5);
           console.log("Keydown success. activated.");
         } 
       }
