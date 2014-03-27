@@ -40,7 +40,7 @@ Crafty.scene('Game', function() {
  // var ent = Crafty.e("2D, DOM, Image").image("myimage.png");
   
 	//Spawn the army of darkness
-  if (level == 5) {
+  if (level == 5 || level == 10) {
 		Crafty.audio.play('divadance');
     Crafty.e('Boss').at(3,3).delay(function() {
       creeps_spawned+=1;
@@ -118,7 +118,7 @@ Crafty.scene('Victory', function() {
 	this.restart_game = function() {
 		if (!delay) {
       level += 1;
-      score = score;
+      levelscore = 0;
       gold = 100 + gold * 0.1 + (level * 10);
 			Crafty.scene('Game');
 		}
@@ -134,7 +134,7 @@ Crafty.scene('Victory', function() {
 Crafty.scene('Failure', function() {
 	// Display some text in celebration of the victory
 	Crafty.e('2D, DOM, Text')
-		.text('Your Hero Has Been Slain By Rotten Fruit! Final score: ' + score)
+		.text('Your Hero Has Been Slain By Rotten Fruit! Score: ' + score + " Lives remaining: " + lives)
 		.attr({ x: 0, y: Game.height()/2 - 24, w: Game.width() })
 		.textFont($text_css);
 
@@ -144,10 +144,16 @@ Crafty.scene('Failure', function() {
 	setTimeout(function() { delay = false; }, 5000);
 	this.restart_game = function() {
 		if (!delay) {
+      if (lives <= 0) {
       level = 1;
       score = 0;
       gold = 100;
-			Crafty.scene('Game');
+      } else {
+      lives -= 1;
+      score = score - levelscore;
+      }
+      levelscore = 0;
+  		Crafty.scene('Game');
 		}
 	};
 	Crafty.bind('KeyDown', this.restart_game);
@@ -173,7 +179,6 @@ Crafty.scene('Loading', function(){
 	// Load our sprite map image
 	Crafty.load([
 		'assets/frogs.png',
-    'assets/grass.png',
     'assets/fireball.png',
     'assets/apple.png',
     'assets/chapstick.png',
@@ -220,8 +225,10 @@ Crafty.scene('Loading', function(){
 			ring:     ['assets/candy_dish_lid.mp3', 'assets/candy_dish_lid.ogg', 'assets/candy_dish_lid.aac']
 		});
     score = 0;
+    levelscore = 0;
     gold = 100;
-    level = 1;
+    level = 4;
+    lives = 3;
     // levels = 2;//next make this infinite
 		//wave count incrementing
     // Crafty.e("2D, Canvas, Text").attr({ x: 100, y: 100 }).text('Look at me!! Score: ' + score)

@@ -58,6 +58,9 @@ Crafty.c('Creep', {
 		this.requires('apple, BadGuy')
 		this.health = 10;
     this.movespeed = 1.2 + (level * 0.17);
+    if (level == 4 || level == 8) {
+      this.movespeed = this.movespeed * 1.45 * Math.random();
+    }
 	},
 });
 

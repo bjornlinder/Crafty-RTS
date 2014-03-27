@@ -29,7 +29,7 @@ Crafty.c('Scoreboard', {
      //   .text('Look at me!! Score: ' + score)
         .textColor('#ffffff', 3);
 		this.bind("EnterFrame", function(){
-      this.text('Level: ' + level + ' Score: ' + score + " Gold: " + gold);
+      this.text('Level: ' + level + ' Score: ' + score + " Gold: " + gold + " Lives: " + lives);
     });
   }
 });
