@@ -2,6 +2,8 @@
 // -------------
 // Runs the core gameplay loop
 Crafty.scene('Game', function() {
+  Crafty.background('url(assets/unicorn.jpg)');
+  
 	// A 2D array to keep track of all occupied tiles
 	this.occupied = new Array(Game.map_grid.width);
 	for (var i = 0; i < Game.map_grid.width; i++) {
@@ -67,14 +69,12 @@ Crafty.scene('Game', function() {
   }
 
 	// Generate five villages on the map in random locations
-	var max_villages = 5;
+  //  var max_villages = 5;
 	for (var x = 0; x < Game.map_grid.width; x++) {
 		for (var y = 0; y < Game.map_grid.height; y++) {
       
-			if (Math.random() < 0.03) {
-				if (Crafty('Village').length < max_villages && !this.occupied[x][y]) {
+			if (!this.occupied[x][y] && Math.random() < 0.03) {
 					Crafty.e('Village').at(x, y);
-				}
 			}
 			else if (Math.random() < (0.08 + level * 0.005) && !this.occupied[x][y]) {
 				// Place a bush entity at the current tile
@@ -94,66 +94,53 @@ Crafty.scene('Game', function() {
   
 	Crafty.bind('LevelComplete', function() {
     console.log('All Creeps killed. ' + Crafty('PC').length)
+    debugger;
     if (creeps_spawned >= creep_count) {
   		Crafty.scene('Victory');
     }
 	});
  
 }, function() {
-	// Remove our event binding from above so that we don't
-	//  end up having multiple redundant event watchers after
-	//  multiple restarts of the game
-	//this.unbind('Death', this.show_result);
+
   this.unbind('LevelComplete', this.show_result);
   this.unbind('PlayerDeath', this.show_result); 
 });
  
- 
-// Victory scene
-// -------------
-// Tells the player when they've won and lets them start a new game
 Crafty.scene('Victory', function() {
-	// Display some text in celebration of the victory
 	Crafty.e('2D, DOM, Text')
 		.text('You Make a Fruit Smoothie. Level Reached: ' + level + ' Score: ' + score + ' Press any key to continue.' )
 		.attr({ x: 0, y: Game.height()/2 - 24, w: Game.width() })
 		.textFont($text_css);
- 
-	// Give'em a round of applause!
+	Crafty.background('url(assets/rainbowland.jpg)');
+
 //	Crafty.audio.play('applause');
  
-	// After a short delay, watch for the player to press a key, then restart
-	// the game when a key is pressed
 	var delay = true;
-	setTimeout(function() { delay = false; }, 5000);
+	setTimeout(function() { delay = false; }, 3000);
 	this.restart_game = function() {
 		if (!delay) {
       level += 1;
       levelscore = 0;
-      gold = 100 + gold * 0.1 + (level * 10);
+      gold = 90 + Math.floor(gold * 0.1) + (level * 10);
 			Crafty.scene('Game');
 		}
 	};
 	Crafty.bind('KeyDown', this.restart_game);
 }, function() {
-	// Remove our event binding from above so that we don't
-	//  end up having multiple redundant event watchers after
-	//  multiple restarts of the game
 	this.unbind('KeyDown', this.restart_game);
 });
 
 Crafty.scene('Failure', function() {
-	// Display some text in celebration of the victory
-	Crafty.e('2D, DOM, Text')
-	  .text('Faizaan has fallen. Final score: ' + score + " Lives remaining: " + lives)
-	//	.text('Your Hero Has Been Slain By Rotten Fruit! Score: ' + score + " Lives remaining: " + lives)
-		.attr({ x: 0, y: Game.height()/2 - 24, w: Game.width() })
-		.textFont($text_css);
+	Crafty.background('url(assets/froggy.jpg)');
 
-	// After a short delay, watch for the player to press a key, then restart
-	// the game when a key is pressed
+	Crafty.e('2D, DOM, Text')
+		.text('Your Hero Has Been Slain By Rotten Fruit! Score: ' + score + " Lives remaining: " + lives)
+		.attr({ x: 0, y: Game.height()/2 - 24, w: Game.width() })
+		.textFont($text_css)
+    .textColor('#FF0000');
+
 	var delay = true;
-	setTimeout(function() { delay = false; }, 5000);
+	setTimeout(function() { delay = false; }, 3000);
 	this.restart_game = function() {
 		if (!delay) {
       if (lives <= 0) {
@@ -162,6 +149,7 @@ Crafty.scene('Failure', function() {
       gold = 100;
       } else {
       lives -= 1;
+      gold+=100;
       score = score - levelscore;
       }
       levelscore = 0;
@@ -170,12 +158,8 @@ Crafty.scene('Failure', function() {
 	};
 	Crafty.bind('KeyDown', this.restart_game);
 }, function() {
-	// Remove our event binding from above so that we don't
-	//  end up having multiple redundant event watchers after
-	//  multiple restarts of the game
 	this.unbind('KeyDown', this.restart_game);
 });
-
  
 // Loading scene
 // -------------
@@ -193,6 +177,7 @@ Crafty.scene('Loading', function(){
 		'assets/frogs.png',
     'assets/fireball.png',
     'assets/apple.png',
+   // 'assets/rainbowland.jpg',
     'assets/chapstick.png',
     'assets/tree2.png',
     'assets/wizard.png',
@@ -208,20 +193,13 @@ Crafty.scene('Loading', function(){
 		'assets/candy_dish_lid.ogg',
 		'assets/candy_dish_lid.aac'
 		], function(){
-		// Once the images are loaded...
- 
-		// Define the PC's sprite to be the first sprite in the third row of the
-		//  animation sprite map
-    // Crafty.sprite(16, 'assets/hunter.png', {
-    //   spr_player:  [0, 2],
-    // }, 0, 2);
+
 		Crafty.sprite('assets/wizard.png', {wizard:[0,0,42,52]});
 		Crafty.sprite('assets/tree2.png', {spr_tree:[0,0,43,41]});
 		Crafty.sprite('assets/candymountain.png', {candymountain:[0,0,64,59]});
 		Crafty.sprite('assets/chapstick.png', {chapstick:[0,0,52,39]});
 		Crafty.sprite('assets/fireball.png', {fireball:[0,0,28,32]});
 		Crafty.sprite('assets/apple.png', {apple:[0,0,44,44]});
-	//	Crafty.sprite('assets/grass.png', {grass:[0,0,52,52]});
 		Crafty.sprite('assets/bossapple.png', {bossapple:[0,0,88,88]});
     
 		Crafty.sprite(36, 'assets/frogs.png', {
@@ -241,12 +219,7 @@ Crafty.scene('Loading', function(){
     gold = 100;
     level = 1;
     lives = 5;
-    // levels = 2;//next make this infinite
-		//wave count incrementing
-    // Crafty.e("2D, Canvas, Text").attr({ x: 100, y: 100 }).text('Look at me!! Score: ' + score)
-    //    .textColor('#FF0000', 0.6);
- 
-		// Now that our sprites are ready to draw, start the game
+
 		Crafty.scene('Game');
 	});
 });

@@ -113,9 +113,9 @@ Crafty.c('PC', {
     
     this.bind('KeyDown', function(key) {
       if (key.key === Crafty.keys.T) {
-        if (gold >=(100 + level*5)) {
+        if (gold >=(95 + level*5)) {
           Crafty.e('Tower');
-          gold-=(100 + level*5);
+          gold-=(95 + level*5);
           console.log("Keydown success. activated.");
         } 
       }
