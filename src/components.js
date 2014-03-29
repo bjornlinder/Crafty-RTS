@@ -129,7 +129,7 @@ Crafty.c('PC', {
 			.reel('PlayerMovingLeft',  600, 0, 3, 3);
  
 		var animation_speed = 4;
-		this.maxHealth = 10036 + (level * 8);
+		this.maxHealth = 136 + (level * 8);
     this.health = this.maxHealth;
     this.range = 80;
     
