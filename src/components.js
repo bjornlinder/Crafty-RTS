@@ -79,7 +79,7 @@ Crafty.c('Creep', {
 		this.health = 10;
     this.range = 80;
     this.movespeed = 1.2 + (level * 0.17);
-    if (level == 4 || level == 8 || level >= 10) {
+    if (level == 2 || level == 8 ||  level >= 10) {
       this.movespeed = this.movespeed * 1.45 * Math.random();
     }
 	},
@@ -129,7 +129,7 @@ Crafty.c('PC', {
 			.reel('PlayerMovingLeft',  600, 0, 3, 3);
  
 		var animation_speed = 4;
-		this.maxHealth = 136 + (level * 8);
+		this.maxHealth = 10036 + (level * 8);
     this.health = this.maxHealth;
     this.range = 80;
     
@@ -138,6 +138,7 @@ Crafty.c('PC', {
         if (gold >=(95 + level*5)) {
           Crafty.e('Tower');
           gold-=(95 + level*5);
+          goldspent+=(95 + level*5);
           console.log("Keydown success. activated.");
         } 
       }

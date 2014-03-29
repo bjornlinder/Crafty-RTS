@@ -30,7 +30,9 @@ Crafty.scene('Game', function() {
 	}
   
   Crafty.e('Scoreboard');
-
+  goldspent = 0;
+  levelscore = 0;
+  
 	creeps_spawned = 0;
 	creep_count = 7 + (level * 2);
   spawn_interval = 1000 - (level * 100);
@@ -53,8 +55,8 @@ Crafty.scene('Game', function() {
   		Crafty.e("Cthullu").at(this.at().x,Math.floor(9*Math.random()*this.at().y));
   	},	1700, level*2.5
   	);
-  } else if (level == 5 || level >= 9) {
-  	creep_count = 3 * level - 1;
+  } else if (level == 5 || level == 10 || level == 15) {
+  	creep_count = (2 + level/5)*(4 + level/5); //27. should be 24 at lvl 9. 4 boss * 6. 5 boss * 7
     Crafty.e('CandyMountain').at(3,3).delay(function() {
       creeps_spawned+=1;
       Crafty.e("Boss").at(this.at().x,this.at().y).delay(function() {
@@ -124,7 +126,6 @@ Crafty.scene('Victory', function() {
 	this.restart_game = function() {
 		if (!delay) {
       level += 1;
-      levelscore = 0;
       gold = 90 + Math.floor(gold * 0.1) + (level * 10);
 			Crafty.scene('Game');
 		}
@@ -155,10 +156,9 @@ Crafty.scene('Failure', function() {
       lives = 6;
       } else {
       lives -= 1;
-      gold+=100;
+      gold += goldspent;
       score = score - levelscore;
       }
-      levelscore = 0;
   		Crafty.scene('Game');
 		}
 	};
