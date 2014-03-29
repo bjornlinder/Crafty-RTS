@@ -42,6 +42,7 @@ Crafty.scene('Game', function() {
 		Crafty.audio.play('divadance');
     Crafty.e('Boss').at(3,3).delay(function() {
       creeps_spawned+=1;
+      creep_count-=1;
   		Crafty.e("Creep").at(this.at().x,this.at().y);
   	},	spawn_interval, creep_count - 2	
   	);
@@ -88,12 +89,12 @@ Crafty.scene('Game', function() {
 	Crafty.audio.play('ring');
 
 	Crafty.bind('PlayerDeath', function() {
-    console.log('Death was triggered. Crafty("PC").length: ' + Crafty('PC').length)
+  //  console.log('Death was triggered. Crafty("PC").length: ' + Crafty('PC').length)
 		Crafty.scene('Failure');
 	});
   
 	Crafty.bind('LevelComplete', function() {
-    console.log('All Creeps killed. ' + Crafty('PC').length)
+  //  console.log('All Creeps killed. ' + Crafty('PC').length)
     if (creeps_spawned >= creep_count) {
   		Crafty.scene('Victory');
     }
@@ -138,7 +139,7 @@ Crafty.scene('Failure', function() {
 	Crafty.background('url(assets/applesauce.gif)');
 
 	Crafty.e('2D, DOM, Text')
-		.text("Your Hero Has Been Slain By Rotten Fruit! Level reached: " + level + "; Score: " + score + "; Lives remaining: " + lives)
+		.text("Your Hero Has Been Slain By Rotten Fruit! Level reached: " + level + "; Score: " + score + "; Lives remaining: " + String(lives-1))
 		.attr({ x: 0, y: Game.height()/2 - 24, w: Game.width() })
 		.textFont($text_css)
     .textColor('#FF0000');
@@ -151,6 +152,7 @@ Crafty.scene('Failure', function() {
       level = 1;
       score = 0;
       gold = 100;
+      lives = 6;
       } else {
       lives -= 1;
       gold+=100;
