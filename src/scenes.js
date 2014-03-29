@@ -1,6 +1,5 @@
 // Game scene
 // -------------
-// Runs the core gameplay loop
 Crafty.scene('Game', function() {
   Crafty.background('url(assets/unicorn.jpg)');
   
@@ -18,7 +17,7 @@ Crafty.scene('Game', function() {
   Crafty.e('HealthBar').attr({x:5,y:5});
 	this.occupied[this.player.at().x][this.player.at().y] = true;
  
-	// Place a tree at every edge square on our grid of 16x16 tiles
+	// Place a tree at every edge square on grid
 	for (var x = 0; x < Game.map_grid.width; x++) {
 		for (var y = 0; y < Game.map_grid.height; y++) {
 			var at_edge = x == 0 || x == Game.map_grid.width - 1 || y == 0 || y == Game.map_grid.height - 1;
@@ -39,17 +38,21 @@ Crafty.scene('Game', function() {
     spawn_interval = 500;
   }
   
- // var ent = Crafty.e("2D, DOM, Image").image("myimage.png");
-  
-	//Spawn the army of darkness
-  if (level == 3 || level == 8) {
+  if (level == 3 || level == 8 || level == 11) {
 		Crafty.audio.play('divadance');
     Crafty.e('Boss').at(3,3).delay(function() {
       creeps_spawned+=1;
   		Crafty.e("Creep").at(this.at().x,this.at().y);
-  	},	spawn_interval, creep_count - 1	
+  	},	spawn_interval, creep_count - 2	
   	);
-  } else if (level == 5 || level == 10) {
+  } else if (level == 4 || level == 6 || level == 12) {
+    creep_count = level*2
+    Crafty.e('HellishPortal').at(0,1).delay(function() {
+      creeps_spawned+=1;
+  		Crafty.e("Cthullu").at(this.at().x,Math.floor(9*Math.random()*this.at().y));
+  	},	1700, level*2.5
+  	);
+  } else if (level == 5 || level >= 9) {
   	creep_count = 3 * level - 1;
     Crafty.e('CandyMountain').at(3,3).delay(function() {
       creeps_spawned+=1;
@@ -67,17 +70,14 @@ Crafty.scene('Game', function() {
   	},	spawn_interval, creep_count - 1
   	);
   }
-
-	// Generate five villages on the map in random locations
-  //  var max_villages = 5;
+  
 	for (var x = 0; x < Game.map_grid.width; x++) {
 		for (var y = 0; y < Game.map_grid.height; y++) {
       
 			if (!this.occupied[x][y] && Math.random() < 0.03) {
-					Crafty.e('Village').at(x, y);
+					Crafty.e('Chapstick').at(x, y);
 			}
-			else if (Math.random() < (0.08 + level * 0.005) && !this.occupied[x][y]) {
-				// Place a bush entity at the current tile
+			else if (Math.random() < (0.09 + level * 0.004) && !this.occupied[x][y]) {
 				var bush_or_rock = 'Tree'
 				Crafty.e(bush_or_rock).at(x, y)
 				this.occupied[x][y] = true;
@@ -94,7 +94,6 @@ Crafty.scene('Game', function() {
   
 	Crafty.bind('LevelComplete', function() {
     console.log('All Creeps killed. ' + Crafty('PC').length)
-    debugger;
     if (creeps_spawned >= creep_count) {
   		Crafty.scene('Victory');
     }
@@ -106,14 +105,18 @@ Crafty.scene('Game', function() {
   this.unbind('PlayerDeath', this.show_result); 
 });
  
+// end of level scenes
 Crafty.scene('Victory', function() {
-	Crafty.e('2D, DOM, Text')
+	message = Crafty.e('2D, DOM, Text')
 		.text('You Make a Fruit Smoothie. Level Reached: ' + level + ' Score: ' + score + ' Press any key to continue.' )
 		.attr({ x: 0, y: Game.height()/2 - 24, w: Game.width() })
 		.textFont($text_css);
 	Crafty.background('url(assets/rainbowland.jpg)');
+  if (level == 3 || level == 5 || level == 11) {
+    message.text('Beware the range of Cthullu. He will be destroyed automatically after crossing the screen. Level Reached: ' + level + ' Score: ' + score + ' Press any key to continue.');
+  }
 
-//	Crafty.audio.play('applause');
+	Crafty.audio.play('applause');
  
 	var delay = true;
 	setTimeout(function() { delay = false; }, 3000);
@@ -131,10 +134,11 @@ Crafty.scene('Victory', function() {
 });
 
 Crafty.scene('Failure', function() {
-	Crafty.background('url(assets/froggy.jpg)');
+	//Crafty.background('url(assets/froggy.jpg)');
+	Crafty.background('url(assets/applesauce.gif)');
 
 	Crafty.e('2D, DOM, Text')
-		.text('Your Hero Has Been Slain By Rotten Fruit! Score: ' + score + " Lives remaining: " + lives)
+		.text("Your Hero Has Been Slain By Rotten Fruit! Level reached: " + level + "; Score: " + score + "; Lives remaining: " + lives)
 		.attr({ x: 0, y: Game.height()/2 - 24, w: Game.width() })
 		.textFont($text_css)
     .textColor('#FF0000');
@@ -175,10 +179,15 @@ Crafty.scene('Loading', function(){
 	// Load our sprite map image
 	Crafty.load([
 		'assets/frogs.png',
+    'assets/rainbowland.jpg',
     'assets/fireball.png',
+    'assets/unicorn.jpg',
     'assets/apple.png',
-   // 'assets/rainbowland.jpg',
+    'assets/cthullu.png',
+    'assets/applesauce.gif',
     'assets/chapstick.png',
+    'assets/candymountain.png',
+    'assets/bossapple.png',
     'assets/tree2.png',
     'assets/wizard.png',
     'assets/divadance.m4a',
@@ -201,6 +210,7 @@ Crafty.scene('Loading', function(){
 		Crafty.sprite('assets/fireball.png', {fireball:[0,0,28,32]});
 		Crafty.sprite('assets/apple.png', {apple:[0,0,44,44]});
 		Crafty.sprite('assets/bossapple.png', {bossapple:[0,0,88,88]});
+		Crafty.sprite('assets/cthullu.png', {cthullu:[0,0,140,137]});
     
 		Crafty.sprite(36, 'assets/frogs.png', {
 			spr_frog:  [0, 0]
@@ -218,7 +228,7 @@ Crafty.scene('Loading', function(){
     levelscore = 0;
     gold = 100;
     level = 1;
-    lives = 5;
+    lives = 6;
 
 		Crafty.scene('Game');
 	});

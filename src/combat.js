@@ -34,7 +34,7 @@ Crafty.c('Fights', {
 				var target = enemy; 
 			} 
 		}
-		if (this.min_dist < 80) {	// unit range
+		if (this.min_dist < this.range) {	// unit range
 			this.autoAttack(target);
 		}
 	},

@@ -20,18 +20,24 @@ Crafty.c('Grid', {
 });
  
 // An "Actor" is an entity that is drawn in 2D on canvas
-//  via our logical coordinate grid
+// via the logical coordinate grid
 Crafty.c('Actor', {
 	init: function() {
 		this.requires('2D, Canvas, Grid');
 	},
 });
 
-//Player team
 Crafty.c('GoodGuy', {
 	init: function() {
-		this.requires('Fights');    
+		this.requires('Actor, Fights');    
 	}
+});
+
+Crafty.c('BadGuy', {
+	init: function() {
+		this.requires('Actor, Fights')
+    this.target = Crafty('PC')
+	},
 });
 
 Crafty.c('HellishPortal', {
@@ -46,19 +52,34 @@ Crafty.c('CandyMountain', {
   },
 });
 
-Crafty.c('BadGuy', {
+Crafty.c('Cthullu', {
 	init: function() {
-		this.requires('Actor, Delay, Fights, Seek')
-    this.target = Crafty('PC')
+		this.requires('BadGuy, cthullu')
+    this.health = level*8;
+    this.attack = 35;
+    this.range = 100;
+    this.bind("EnterFrame", function(){
+      this.move('e',1)
+      if (this.x > 730) {
+        this.destroy();
+        score+=20;
+        levelscore+=20;
+        gold+=5;
+        if (Crafty('Cthullu').length == 0) {
+          Crafty.trigger('LevelComplete');
+        }
+      }
+    });
 	},
 });
 
 Crafty.c('Creep', {
 	init: function() {
-		this.requires('apple, BadGuy')
+		this.requires('apple, BadGuy, Seek')
 		this.health = 10;
+    this.range = 80;
     this.movespeed = 1.2 + (level * 0.17);
-    if (level == 4 || level == 8 || level == 10) {
+    if (level == 4 || level == 8 || level >= 10) {
       this.movespeed = this.movespeed * 1.45 * Math.random();
     }
 	},
@@ -66,8 +87,9 @@ Crafty.c('Creep', {
 
 Crafty.c('Boss', {
   init: function() {
-    this.requires('HellishPortal, BadGuy, bossapple');
+    this.requires('HellishPortal, BadGuy, bossapple, Seek');
     this.health = 40;
+    this.range = 80;
     this.movespeed = 0.5;
   },
 });
@@ -100,16 +122,16 @@ Crafty.c('PC', {
 		this.requires('Actor, Fourway, Collision, wizard, SpriteAnimation, GoodGuy')
 			.fourway(3.4+level*0.4)
 			.stopOnSolids()
-			.onHit('Village', this.visitVillage)
+			.onHit('Chapstick', this.visitChapstick)
 			.reel('PlayerMovingUp',    600, 0, 0, 3)
 			.reel('PlayerMovingRight', 600, 0, 1, 3)
 			.reel('PlayerMovingDown',  600, 0, 2, 3)
 			.reel('PlayerMovingLeft',  600, 0, 3, 3);
  
-		// Watch for a change of direction and switch animations accordingly
 		var animation_speed = 4;
 		this.maxHealth = 136 + (level * 8);
     this.health = this.maxHealth;
+    this.range = 80;
     
     this.bind('KeyDown', function(key) {
       if (key.key === Crafty.keys.T) {
@@ -153,25 +175,23 @@ Crafty.c('PC', {
 	},
  
 	// Respond to this player visiting a village
-	visitVillage: function(data) {
-		villlage = data[0].obj;
-		villlage.visit();
+	visitChapstick: function(data) {
+		chaaapstick = data[0].obj;
+		chaaapstick.visit();
 	}
 
 });
  
-// A village is a tile on the grid that the PC must visit in order to win the game
-Crafty.c('Village', {
+Crafty.c('Chapstick', {
 	init: function() {
 		this.requires('Actor, chapstick');
 	},
  
-	// Process a visitation with this village
 	visit: function() {
 		this.destroy();
     Crafty('PC').health += 15;
     score += 8;
 		Crafty.audio.play('knock');
-		Crafty.trigger('VillageVisited', this);
+		Crafty.trigger('ChapstickVisited', this);
 	}
 });
