@@ -53,7 +53,7 @@ Crafty.scene('Game', function() {
     Crafty.e('HellishPortal').at(0,1).delay(function() {
       creeps_spawned+=1;
   		Crafty.e("Cthullu").at(this.at().x,Math.floor(9*Math.random()*this.at().y));
-  	},	1700, level*2.5
+  	},	1700 - (level*50), level*2.5
   	);
   } else if (level == 5 || level == 10 || level == 15) {
   	creep_count = (2 + level/5)*(4 + level/5); //27. should be 24 at lvl 9. 4 boss * 6. 5 boss * 7

@@ -55,16 +55,16 @@ Crafty.c('CandyMountain', {
 Crafty.c('Cthullu', {
 	init: function() {
 		this.requires('BadGuy, cthullu')
-    this.health = level*8;
+    this.health = level*5;
     this.attack = 35;
     this.range = 100;
     this.bind("EnterFrame", function(){
-      this.move('e',1)
+      this.move('e',0.5 + (level * 0.17))
       if (this.x > 730) {
         this.destroy();
         score+=20;
         levelscore+=20;
-        gold+=5;
+        gold+=10;
         if (Crafty('Cthullu').length == 0) {
           Crafty.trigger('LevelComplete');
         }
