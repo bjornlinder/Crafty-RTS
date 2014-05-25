@@ -11,6 +11,19 @@ app.get('/', function(req, res) {
   res.sendfile(__dirname + '/index.html');
 });
 
+
+
+
+app.configure(function() {
+  // Turn down the logging activity
+  app.use(express.logger('dev'));
+  // Serve static html, js, css, and image files from the 'public' directory
+  app.use(express.static(__dirname + '/public'));
+});
+
+
+
+
 var port = Number(process.env.PORT || 5000);
 var server = app.listen(port, function() {
   console.log("Listening on " + port);
